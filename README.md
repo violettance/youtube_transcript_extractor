@@ -2,6 +2,8 @@
 
 A modern web application to extract subtitles (transcripts) from YouTube videos or playlists, supporting multiple languages and both light/dark mode.
 
+![YouTube Transcript Extractor](image.png)
+
 ## Features
 
 - Extract subtitles from a single YouTube video or an entire playlist
