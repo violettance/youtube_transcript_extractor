@@ -9,19 +9,27 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+  <!-- Dark Mode Toggle at the very top -->
+  <div id="themeToggleContainer" class="theme-toggle-top">
+    <label class="theme-switch" aria-label="Toggle dark mode">
+      <span class="theme-switch-icon sun" aria-hidden="true">
+        <!-- Sun SVG -->
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.07-1.41-1.41M6.34 6.34 4.93 4.93m12.02 0-1.41 1.41M6.34 17.66l-1.41 1.41"/></svg>
+      </span>
+      <input class="theme-switch-input" type="checkbox" id="themeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+      <span class="theme-switch-icon moon" aria-hidden="true">
+        <!-- Moon SVG -->
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+      </span>
+      <span class="theme-switch-label">Dark Mode</span>
+    </label>
+  </div>
   <div class="container">
-    <header class="text-center my-5 position-relative">
+    <header class="text-center my-5">
       <h1>YouTube Transcript Extractor</h1>
       <p class="lead">Enter a YouTube video or playlist link to get all subtitles in a single transcript</p>
-      <div id="themeToggleContainer">
-        <label class="theme-switch mb-0">
-          <input class="theme-switch-input" type="checkbox" id="themeToggle" />
-          <span class="theme-switch-label">Dark Mode</span>
-        </label>
-      </div>
     </header>
 
-    <!-- 👇 Eşit hizalanmış kartlar -->
     <div class="centered-card-container">
       <div class="card-width-alert">
         <div class="alert alert-warning" role="alert">
@@ -85,9 +93,75 @@
           </form>
         </div>
       </div>
+
+      <section id="summarySection" class="process-summary-card my-4 d-none" aria-label="Process Summary">
+        <div class="process-summary-header">
+          <span class="process-summary-header-icon" aria-hidden="true">
+            <!-- FileText Lucide SVG -->
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </span>
+          <h2 class="process-summary-title">Process Summary</h2>
+        </div>
+        <div class="process-summary-grid">
+          <div class="process-summary-stat total-videos">
+            <span class="stat-icon" aria-hidden="true">
+              <!-- Video Lucide SVG -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="15" height="10" rx="2"/><polygon points="23 7 16 12 23 17 23 7"/></svg>
+            </span>
+            <span class="stat-value" id="totalVideos">0</span>
+            <span class="stat-label">Total Videos</span>
+          </div>
+          <div class="process-summary-stat successful">
+            <span class="stat-icon" aria-hidden="true">
+              <!-- CheckCircle Lucide SVG -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <span class="stat-value" id="successVideos">0</span>
+            <span class="stat-label">Successful</span>
+          </div>
+          <div class="process-summary-stat alternative-language">
+            <span class="stat-icon" aria-hidden="true">
+              <!-- AlertCircle Lucide SVG -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </span>
+            <span class="stat-value" id="fallbackVideos">0</span>
+            <span class="stat-label">Alternative Language</span>
+          </div>
+          <div class="process-summary-stat failed">
+            <span class="stat-icon" aria-hidden="true">
+              <!-- XCircle Lucide SVG -->
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </span>
+            <span class="stat-value" id="failedVideos">0</span>
+            <span class="stat-label">Failed</span>
+          </div>
+        </div>
+        <div class="mt-3 text-center" id="languageInfo"></div>
+      </section>
+
+      <!-- Result Section: same width, no card around title/buttons -->
+      <section id="resultSection" class="my-4 d-none">
+        <div class="result-header d-flex justify-content-between align-items-center mb-2">
+          <h3 class="result-title mb-0" id="contentTitle"></h3>
+          <div>
+            <button class="btn btn-sm btn-outline-primary" id="copyBtn">Copy</button>
+            <button class="btn btn-sm btn-outline-success" id="downloadBtn">Download</button>
+          </div>
+        </div>
+        <!-- Error/Warning Message Area -->
+        <div id="resultWarning" class="result-warning d-none" role="alert" aria-live="polite">
+          <div class="result-warning-header">
+            <!-- XCircle Lucide SVG -->
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span class="result-warning-title">Transcript Extraction Failed</span>
+          </div>
+          <div class="result-warning-desc">Try running the application locally instead of in cloud environment</div>
+        </div>
+        <pre id="transcriptResult" class="transcript-text"></pre>
+      </section>
     </div>
 
-    <!-- Loading Section -->
+    <!-- Loading Section: same width as other cards -->
     <div id="loadingSection" class="text-center my-4 d-none">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -97,57 +171,11 @@
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
       </div>
     </div>
-
-    <!-- Summary Section -->
-    <div id="summarySection" class="my-4 d-none">
-      <div class="card">
-        <div class="card-header bg-info text-white">
-          <h5 class="mb-0">Process Summary</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-3 text-center">
-              <h6>Total Videos</h6>
-              <span class="badge bg-primary rounded-pill" id="totalVideos">0</span>
-            </div>
-            <div class="col-md-3 text-center">
-              <h6>Successful</h6>
-              <span class="badge bg-success rounded-pill" id="successVideos">0</span>
-            </div>
-            <div class="col-md-3 text-center">
-              <h6>Alternative Language</h6>
-              <span class="badge bg-warning rounded-pill" id="fallbackVideos">0</span>
-            </div>
-            <div class="col-md-3 text-center">
-              <h6>Failed</h6>
-              <span class="badge bg-danger rounded-pill" id="failedVideos">0</span>
-            </div>
-          </div>
-          <div class="mt-3 text-center" id="languageInfo"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Result Section -->
-    <div id="resultSection" class="my-4 d-none">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0" id="contentTitle"></h5>
-          <div>
-            <button class="btn btn-sm btn-outline-primary" id="copyBtn">Copy</button>
-            <button class="btn btn-sm btn-outline-success" id="downloadBtn">Download</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <pre id="transcriptResult" class="transcript-text"></pre>
-        </div>
-      </div>
-    </div>
   </div>
 
   <footer class="text-center py-4 mt-5">
     <p>© 2025 YouTube Transcript Extractor</p>
-    <p><a href="https://github.com/violettance/youtube_transcript_extractor" target="_blank">Download Source Code</a></p>
+    <p><a href="https://github.com/violettance/youtube_transcript_extractor" target="_blank" class="source-link">Download Source Code</a></p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

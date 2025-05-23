@@ -94,7 +94,7 @@ def extract():
             # Get videos from playlist
             video_ids = get_playlist_videos(playlist_id, max_videos)
             if not video_ids:
-                return jsonify({'error': 'No videos found in playlist'}), 400
+                return jsonify({'error': 'No videos found in playlist.'}), 400
             
             # Get transcripts for all videos
             all_transcripts = []
@@ -116,7 +116,7 @@ def extract():
                     failed_count += 1
             
             if not all_transcripts:
-                return jsonify({'error': 'No transcripts found for any video in the playlist'}), 400
+                return jsonify({'error': 'No transcripts found for any video in the playlist.'}), 400
             
             # Format all transcripts
             formatter = TextFormatter()
@@ -140,11 +140,11 @@ def extract():
         # Single video
         video_id = extract_video_id(url)
         if not video_id:
-            return jsonify({'error': 'Invalid YouTube URL'}), 400
+            return jsonify({'error': 'Invalid YouTube URL.'}), 400
         
         transcript, lang, is_fallback = get_transcript(video_id, language)
         if not transcript:
-            return jsonify({'error': 'No transcript found for this video'}), 400
+            return jsonify({'error': 'No transcript found for this video. Subtitles may be disabled or unavailable.'}), 400
         
         # Format transcript
         formatter = TextFormatter()
@@ -163,7 +163,7 @@ def extract():
         })
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))

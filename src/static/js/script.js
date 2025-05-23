@@ -85,6 +85,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            // Handle error case
+            if (data.error) {
+                // Show warning area
+                const warning = document.getElementById('resultWarning');
+                warning.classList.remove('d-none');
+                warning.querySelector('.result-warning-title').textContent = 'Transcript Extraction Failed';
+                warning.querySelector('.result-warning-desc').textContent = data.error;
+                transcriptResult.textContent = '';
+                loadingSection.classList.add('d-none');
+                resultSection.classList.remove('d-none');
+                extractBtn.disabled = false;
+                return;
+            }
+            // Hide warning area on success
+            document.getElementById('resultWarning').classList.add('d-none');
             // Show results
             contentTitle.textContent = data.title || 'Transcript';
             transcriptResult.textContent = data.transcript;
