@@ -11,6 +11,8 @@ import json
 from urllib.parse import urlparse, parse_qs
 import requests
 from bs4 import BeautifulSoup
+import time
+import random
 
 app = Flask(__name__)
 app.register_blueprint(transcript_bp)
@@ -103,7 +105,12 @@ def extract():
             fallback_count = 0
             failed_count = 0
             
-            for video_id in video_ids:
+            for i, video_id in enumerate(video_ids):
+                # Add random delay between requests (3-7 seconds)
+                if i > 0:  # Don't delay before the first video
+                    delay = random.uniform(3, 7)
+                    time.sleep(delay)
+                
                 transcript, lang, is_fallback = get_transcript(video_id, language)
                 if transcript:
                     all_transcripts.append(transcript)
