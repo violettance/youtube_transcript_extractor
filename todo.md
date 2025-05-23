@@ -1,0 +1,22 @@
+# YouTube Transcript Extractor - TODO List
+
+- [x] Analyze user requirements
+- [x] Set up Flask application structure
+  - [x] Create necessary folders
+  - [x] Create main application file
+  - [x] Install required libraries
+- [x] Implement YouTube subtitle extraction functionality
+  - [x] Research YouTube API or alternative libraries
+  - [x] Implement playlist processing function
+  - [x] Implement subtitle extraction function
+- [x] Develop user interface
+  - [x] Design main page
+  - [x] Create playlist/video input form
+  - [x] Create transcript display section
+- [x] Test the application
+  - [x] Test with sample playlists
+  - [x] Fix bugs
+- [x] Finalize and deploy the application
+  - [x] Final review
+  - [x] Deploy the application
+  - [x] Inform users
